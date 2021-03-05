@@ -16,6 +16,7 @@ const { sequelize: db } = require('../config/config').database
 //       acquire: 10000
 //   }   
 // })
+console.log(db);
 const sequelize = new Sequelize( {
   database: db.database,
   username: db.username,
