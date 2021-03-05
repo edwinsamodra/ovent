@@ -1,9 +1,16 @@
 const express = require('express');
+const db = require('./models')
 const app = express();
 const bodyParser = require('body-parser')
 
+const CORS = require('cors');
+
+app.use(CORS())
+
 // Router
 const userRoute = require('./routes/user.route')
+
+db.sequelize.sync({ });
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded( { extended: false}))
