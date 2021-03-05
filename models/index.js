@@ -6,7 +6,8 @@ const sequelize = new Sequelize(database.sequelize.database, database.sequelize.
   host: database.sequelize.host,
   dialect: database.sequelize.dialect,
   dialectOptions: {
-      ssl: true
+      ssl: true,
+      rejectUnauthorized: false
     },
   pool: {
       max: 3,
