@@ -10,7 +10,7 @@ const config = {
             host: process.env.DBHOST,
             dialect: process.env.DBDIALECT || 'postgres',
             dialectOptions: {
-                ssl: process.env.SSL || false,
+                ssl: (process.env.SSL) ? true : false,
                 rejectUnauthorized: false
             },
             port: process.env.DBPORT || 5432,
