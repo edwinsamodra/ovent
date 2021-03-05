@@ -13,7 +13,7 @@ const sequelize = new Sequelize(database.sequelize.database, database.sequelize.
       acquire: 10000
   }   
 })
-
+// console.log("AAAAAAAAAAAAAAAAA");
 const users = require("./user")(sequelize, Sequelize);
 
 module.exports = {

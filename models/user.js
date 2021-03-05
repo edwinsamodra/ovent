@@ -1,6 +1,6 @@
 'use strict';
 const { Model } = require('sequelize');
-const { v4: uuidv4 } = require('uuid');
+const { uuid } = require('uuidv4');
 const bcrypt = require('bcryptjs')
 
 module.exports = (sequelize, DataTypes) => {
@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
-      defaultValue: uuidv4()
+      // defaultValue: uuid()
     },
     name: {
       type: DataTypes.STRING,
@@ -67,6 +67,8 @@ module.exports = (sequelize, DataTypes) => {
       delete values.password
       return values
   }
+
+  User.beforeCreate(user => user.id = uuid());
 
   return User;
 };

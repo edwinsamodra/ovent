@@ -17,7 +17,7 @@ const registerValidator = (req, res, next) => {
         if(!isValidPass(pass)) {
             throw 'Password must have lower case, upper case, number, and minimal 8 digits'
         }
-        // next()
+        next()
     } catch (error) {
         res.json({
             status: 'error',

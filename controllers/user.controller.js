@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { JWTSECRET } = require('../config/config')
 const db = require("../models");
-const User = db.User;
+const User = db.users;
 
 
 const registerUser = (req, res) => {
