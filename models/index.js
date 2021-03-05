@@ -5,7 +5,9 @@ const { database } = require('../config/config')
 const sequelize = new Sequelize(database.sequelize.database, database.sequelize.username, database.sequelize.password, {
   host: database.sequelize.host,
   dialect: database.sequelize.dialect,
-
+  dialectOptions: {
+      ssl: true
+    },
   pool: {
       max: 3,
       min: 0,
