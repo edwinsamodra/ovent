@@ -9,6 +9,9 @@ const config = {
             database: process.env.DBNAME,
             host: process.env.DBHOST,
             dialect: process.env.DBDIALECT || 'postgres',
+            dialectOptions: {
+                ssl: true
+              },
             port: process.env.DBPORT || 5432,
             define: {
                 charset: 'utf8mb4',
