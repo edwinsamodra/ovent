@@ -1,5 +1,6 @@
 const db = require("../models");
 const Product = db.products;
+const { Sequelize } = require('sequelize');
 const Op = Sequelize.Op
 
 function showPopularProducts(req, res, next) {

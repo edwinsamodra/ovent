@@ -17,7 +17,7 @@ const sequelize = new Sequelize( {
       acquire: 10000
   }   
 })
-console.log(sequelize);
+
 const users = require("./user.model")(sequelize, Sequelize)
 const products = require("./product.model")(sequelize, Sequelize)
 
