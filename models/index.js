@@ -1,22 +1,6 @@
 const { Sequelize } = require('sequelize');
 const { sequelize: db } = require('../config/config').database
 
-
-// const sequelize = new Sequelize(database.sequelize.database, database.sequelize.username, database.sequelize.password, {
-//   host: database.sequelize.host,
-//   dialect: database.sequelize.dialect,
-//   dialectOptions: {
-//       // ssl: true,
-//       // rejectUnauthorized: false
-//     },
-//   pool: {
-//       max: 3,
-//       min: 0,
-//       idle: 3000,
-//       acquire: 10000
-//   }   
-// })
-console.log(db);
 const sequelize = new Sequelize( {
   database: db.database,
   username: db.username,
@@ -33,12 +17,14 @@ const sequelize = new Sequelize( {
       acquire: 10000
   }   
 })
-// console.log("AAAAAAAAAAAAAAAAA");
-const users = require("./user")(sequelize, Sequelize);
+console.log(sequelize);
+const users = require("./user.model")(sequelize, Sequelize)
+const products = require("./product.model")(sequelize, Sequelize)
 
 module.exports = {
   Sequelize,
   sequelize,
   
-  users
+  users,
+  products
 }

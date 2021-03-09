@@ -5,10 +5,8 @@ const db = require('../models')
 
 const router = express.Router()
 
-// register user
 router.post('/register', registerValidator, userController.registerUser);
 
-// login
 router.post('/login', userController.loginUser)
 
 router.get('/coba', (req, res) => {
@@ -27,8 +25,5 @@ router.get('/coba', (req, res) => {
         });
       
 })
-
-// update
-// router.put('/:id', userController.update)
 
 module.exports = router

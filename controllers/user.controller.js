@@ -7,13 +7,13 @@ const User = db.users;
 
 
 const registerUser = (req, res) => {
-    const { email, pass, name } = req.body
+    const { email, pass } = req.body
     User.findOne({ where: { email: email }})
         .then(data => {
             if (data) {
                 throw 'Email sudah digunakan'
             }
-            return User.create({ email, pass, name})
+            return User.create({ email, pass })
         })
         .then((data) => {
             let token = createToken(data)
@@ -42,14 +42,14 @@ const loginUser = (req, res) => {
     User.findOne({ where: { email: email }})
         .then(user => {
             if(!user) {
-                throw 'record not found'
+                throw 'Email atau Password tidak sesuai'
             }
             return user.dataValues
         })
         .then(user => {
             const isValidPass = bcrypt.compareSync(pass, user.pass)
             if (!isValidPass) {
-                throw 'crypto/bcrypt: hashedPassword is not the hash of the given password'
+                throw 'Email atau Password tidak sesuai'
             }
             
             let token = createToken(user)
@@ -74,7 +74,7 @@ const loginUser = (req, res) => {
 const createToken = (user) => {
     const payload = {
         userId: user.id,
-        name: user.name,
+        // name: user.name,
         avatar: user.avatar,
     }
     return jwt.sign(payload, JWTSECRET, { expiresIn: '1d' })

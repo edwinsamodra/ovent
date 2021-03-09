@@ -8,12 +8,12 @@ const config = {
             password: process.env.DBPASS,
             database: process.env.DBNAME,
             host: process.env.DBHOST,
-            dialect: process.env.DBDIALECT || 'postgres',
+            dialect: process.env.DBDIALECT || 'mysql',
             dialectOptions: {
                 ssl: (!process.env.SSL) ? false : true,
                 rejectUnauthorized: false
             },
-            port: process.env.DBPORT || 5432,
+            port: process.env.DBPORT || 3306,
             define: {
                 charset: 'utf8mb4',
                     dialectOptions: {
