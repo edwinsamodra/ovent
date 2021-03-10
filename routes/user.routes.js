@@ -17,9 +17,10 @@ router.get('/coba', (req, res) => {
           console.log('Connection has been established successfully.');
         })
         .catch(err => {
-            res.json({
-                status: 'error',
-                message: err
+            res.status(500).json({
+                status: "error",
+                message: err,
+                data: null
             })
           console.error('Unable to connect to the database:', err);
         });

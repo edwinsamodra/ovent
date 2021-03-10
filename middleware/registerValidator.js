@@ -20,7 +20,7 @@ const registerValidator = (req, res, next) => {
         next()
     } catch (error) {
         res.status(400).json({
-            status: 'error',
+            status: "error",
             message: error,
             data: null
         })

@@ -11,7 +11,7 @@ const registerUser = (req, res) => {
     User.findOne({ where: { email: email }})
         .then(data => {
             if (data) {
-                throw 'Email sudah digunakan'
+                throw 'Email is already in use!'
             }
             let name = email.split("@");
             name = name[0]
@@ -22,7 +22,7 @@ const registerUser = (req, res) => {
             token = 'Bearer ' + token
             res.status(201).json({
                 status: "success",
-                message: "user registered successfully",
+                message: "User registered successfully",
                 data: {
                     access_token: token
                 }
@@ -31,7 +31,7 @@ const registerUser = (req, res) => {
         .catch((err) => {
             console.log(err);
             res.json({
-                status: 'error',
+                status: "error",
                 message: err,
                 data: null
             })
@@ -44,21 +44,21 @@ const loginUser = (req, res) => {
     User.findOne({ where: { email: email }})
         .then(user => {
             if(!user) {
-                throw 'Email atau Password tidak sesuai'
+                throw 'Incorrect email or password!'
             }
             return user.dataValues
         })
         .then(user => {
             const isValidPass = bcrypt.compareSync(pass, user.pass)
             if (!isValidPass) {
-                throw 'Email atau Password tidak sesuai'
+                throw 'Incorrect email or password!'
             }
             
             let token = createToken(user)
             token = 'Bearer ' + token
             res.json({
                 status: "success",
-                message: "login successfully",
+                message: "Login successfully",
                 data: {
                     access_token: token
                 }
@@ -66,7 +66,7 @@ const loginUser = (req, res) => {
         })
         .catch(err => {
             res.status(500).json({
-                status: 'error',
+                status: "error",
                 message: err,
                 data: null
             })

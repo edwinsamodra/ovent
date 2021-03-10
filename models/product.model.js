@@ -5,6 +5,10 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true,
             primaryKey: true
         },
+        id_vendor: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+        },
         name: {
             type: DataTypes.STRING,
             allowNull: true
@@ -14,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true
         },
         rating: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.DOUBLE,
             allowNull: true
         },
         category: {
@@ -26,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true
         },
         price: {
-            type: DataTypes.DOUBLE,
+            type: DataTypes.INTEGER,
             allowNull: true
         },
         qty_ready: {

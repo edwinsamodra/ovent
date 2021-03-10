@@ -1,7 +1,7 @@
 const db = require("../models");
 const Product = db.products;
 const Vendor = db.vendors;
-const { Sequelize } = require('sequelize');
+const { Sequelize, ABSTRACT } = require('sequelize');
 const Op = Sequelize.Op
 
 function showPopularProducts(req, res, next) {
@@ -10,15 +10,21 @@ function showPopularProducts(req, res, next) {
             rating: {
                 [Op.gt]: 7
             }
-            // Jika memang butuh, maka buat dua, buat fetch all data
-            // sama ngefecth tapi dibatasi cuma nampil beberapa aja
         }
     })
     .then((data) => {
-        res.json(data)
+        res.status(200).json({
+            status: "success",
+            message: "The data was successfully obtained",
+            data: data
+        })
     })
     .catch((err) => {
-        return next(err)
+        res.status(500).json({
+            status: "error",
+            message: err,
+            data: null
+        })
     })
 }
 
@@ -29,10 +35,18 @@ function showCatheringProducts(req, res, next) {
         }
     })
     .then((data) => {
-        res.json(data)
+        res.status(200).json({
+            status: "success",
+            message: "The data was successfully obtained",
+            data: data
+        })
     })
     .catch((err) => {
-        return next(err)
+        res.status(500).json({
+            status: "error",
+            message: err,
+            data: null
+        })
     })
 }
 
@@ -43,10 +57,18 @@ function showDecorationProducts(req, res, next) {
         }
     })
     .then((data) => {
-        res.json(data)
+        res.status(200).json({
+            status: "success",
+            message: "The data was successfully obtained",
+            data: data
+        })
     })
     .catch((err) => {
-        return next(err)
+        res.status(500).json({
+            status: "error",
+            message: err,
+            data: null
+        })
     })
 }
 
@@ -57,84 +79,102 @@ function showRentProducts(req, res, next) {
         }
     })
     .then((data) => {
-        res.json(data)
+        res.status(200).json({
+            status: "success",
+            message: "The data was successfully obtained",
+            data: data
+        })
     })
     .catch((err) => {
-        return next(err)
+        res.status(500).json({
+            status: "error",
+            message: err,
+            data: null
+        })
     })
 }
 
-function showRelatedProducts(req, res, next) {
-    Product.findAll({
-        // where: {
-            // category: req.category
-        // }
-        // perlu di selidiki dulu soalnya kalo ini tu
-    })
-    .then((data) => {
-        res.json(data)
-    })
-    .catch((err) => {
-        return next(err)
-    })
-}
-
-function showById(req, res, next) {
-    const id = req.params.id;
-    Product.findOne({
-        where: {
-            id: id
+async function showById(req, res, next) {
+    const id = req.params.id
+    try {
+        const product = await Product.findOne({
+            where: {
+                id: id
+            },
+            include: [ {
+                model: Vendor,
+                attributes: ['name', 'address', 'description', ]
+                }
+            ]
+        })
+        let category = product.category
+        let relatedProduct = await Product.findAll({
+            limit: 4,
+            where: {
+                [Op.and]: [{ category: category }, { id: { [Op.not]: id } }]
+            }
+        })
+    
+        let data = {
+            product,
+            relatedProduct
         }
-    })
-    .then((data) => {
-        res.json(data)
-    })
-    .catch((err) => {
-        return next(err)
-    })
+        res.json({
+            status: 'success',
+            message: "The data was successfully obtained",
+            data: data
+            })
+    } catch (err) {
+        res.status(500).json({
+            status: 'error',
+            message: err,
+            data: null
+        })
+    }
 }
 
 function search(req, res, next) {
-    // const ven = Vendor.findAll({})
-    // console.log(req.body);
-    const city = req.body.city;
+    const address = req.body.address;
     const name = req.body.name;
     Product.findAll({
         where: {
             [Op.or]: {
-                name: {
+                'name': {
                     [Op.like]: `%${name}%`,
                 },
-                city: { // nama kolom city seharusnya ambil dari table vendor yg punya produk tersebut bukan dari table product
-                    [Op.like]: `%${city}%`,
+                '$Vendor.address$': {
+                    [Op.like]: `%${address}%`
                 }
-            },
+            }
             
-        }
+        },
+        include: [ {
+            model: Vendor,
+            attributes: ['name', 'address']
+            }
+        ]
     })
     .then((data) => {
-        res.json(data)
+        res.status(200).json({
+            status: "success",
+            message: "The data was successfully obtained",
+            data: data
+        })
     })
     .catch((err) => {
-        return next(err)
+        res.status(500).json({
+            status: "error",
+            message: err,
+            data: null
+        })
     })
 }
 
-//     .then((data) => {
-//         res.status(200).json({
-//             product
-//         });
-//     }).catch((err) => {
-//         return next(err)
-//     });
-// }
-
 module.exports = {
-    showPopularProducts, 
+    showPopularProducts,
     showCatheringProducts, 
     showDecorationProducts, 
     showRentProducts,
-    showRelatedProducts,
     showById,
     search
 }

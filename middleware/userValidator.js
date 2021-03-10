@@ -9,7 +9,7 @@ exports.validateUser = (req, res, next) => {
     jwt.verify(token, secretKey, (err, decoded) => {
         if (err) {
             res.status(400).json({
-                status: 'error',
+                status: "error",
                 message: err,
                 data: null
             })

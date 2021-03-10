@@ -16,13 +16,11 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded( { extended: false}))
 
 // defining user, product route
-app.use('/', userRoute)
+app.use('/user', userRoute)
 app.use('/product', productRoute)
 
 app.get('/', (req, res) => {
-    res.json({
-        message: "Welcome!"
-    })
+    res.send("Hello World!")
 })
 
 const PORT = process.env.PORT || 5000;

@@ -15,7 +15,7 @@ router.get('/decorationProducts', productController.showDecorationProducts)
 router.get('/rentProducts', productController.showRentProducts)
 
 router.post('/search', productController.search)
-// with authentication
+
 router.get('/:id', productController.showById)
 
 
