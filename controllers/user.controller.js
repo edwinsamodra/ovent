@@ -13,7 +13,9 @@ const registerUser = (req, res) => {
             if (data) {
                 throw 'Email sudah digunakan'
             }
-            return User.create({ email, pass })
+            let name = email.split("@");
+            name = name[0]
+            return User.create({ name, email, pass })
         })
         .then((data) => {
             let token = createToken(data)
@@ -72,9 +74,12 @@ const loginUser = (req, res) => {
 }
 
 const createToken = (user) => {
+    const name = user.email.split("@");
     const payload = {
         userId: user.id,
-        // name: user.name,
+        name: name[0],
+        email: user.email,
+        city: user.city,
         avatar: user.avatar,
     }
     return jwt.sign(payload, JWTSECRET, { expiresIn: '1d' })

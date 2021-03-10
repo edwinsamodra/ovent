@@ -1,6 +1,5 @@
 'use strict';
 const { Model } = require('sequelize');
-// const { uuid } = require('uuidv4');
 const bcrypt = require('bcryptjs')
 
 module.exports = (sequelize, DataTypes) => {
@@ -10,11 +9,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   User.init({
-    // id: {
-    //   type: DataTypes.UUID,
-    //   primaryKey: true,
-    //   defaultValue: uuid()
-    // },
     name: {
       type: DataTypes.STRING,
       allowNull: true
@@ -22,16 +16,12 @@ module.exports = (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      // validate: {
-      //   isEmail: true
-      // },
       unique: true
     },
     pass: {
       type: DataTypes.STRING,
       allowNull: false,
-
-      set(value){
+      set(value) {
         this.setDataValue('pass', bcrypt.hashSync(value, 10))
       }
     },
@@ -62,8 +52,6 @@ module.exports = (sequelize, DataTypes) => {
       delete values.password
       return values
   }
-
-  // User.beforeCreate(user => user.id = uuid());
 
   return User;
 };

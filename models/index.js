@@ -20,11 +20,17 @@ const sequelize = new Sequelize( {
 
 const users = require("./user.model")(sequelize, Sequelize)
 const products = require("./product.model")(sequelize, Sequelize)
+const vendors = require("./vendor.model")(sequelize, Sequelize)
+
+// products.belongsToMany(allData, {through: productVendor});
+// vendors.belongsToMany(allData, {through: productVendor});
+
 
 module.exports = {
   Sequelize,
   sequelize,
   
   users,
-  products
+  products,
+  vendors
 }
