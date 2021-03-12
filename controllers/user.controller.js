@@ -1,41 +1,35 @@
-const { QueryTypes } = require('sequelize');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { JWTSECRET } = require('../config/config')
 const db = require("../models");
 const User = db.users;
 
-
 const registerUser = (req, res) => {
     const { email, pass } = req.body
-    User.findOne({ where: { email: email }})
-        .then(data => {
-            if (data) {
-                throw 'Email is already in use!'
+    let name = email.split("@");
+    name = name[0]
+    User.create({ name, email, pass })
+    .then((data) => {
+        res.status(200).json({
+            status: "success",
+            message: "User registered successfully",
+            data: {
+                id: data.id,
+                name: data.name,
+                email: data.email,
             }
-            let name = email.split("@");
-            name = name[0]
-            return User.create({ name, email, pass })
         })
-        .then((data) => {
-            let token = createToken(data)
-            token = 'Bearer ' + token
-            res.status(201).json({
-                status: "success",
-                message: "User registered successfully",
-                data: {
-                    access_token: token
-                }
-            })
-        })
-        .catch((err) => {
-            console.log(err);
-            res.json({
-                status: "error",
-                message: err,
+    })
+    .catch((err) => {
+        if(err.name == 'SequelizeUniqueConstraintError'){
+            const failRes = {
+                status : 'error',
+                message : "Email is already in use!",
                 data: null
-            })
-        });
+            }
+            return res.status(400).send(failRes)
+        }
+    })
 }
 
 const loginUser = (req, res) => {
